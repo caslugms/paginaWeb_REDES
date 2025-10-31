@@ -1,0 +1,41 @@
+#title{
+    text-align: center;
+}
+
+#areaCodigo{
+    width: 500px; 
+    height: 200px;
+}
+
+#areaInput{
+    width: 500px; 
+    height: 200px;
+}
+
+#areaResposta{
+    width: 100%; 
+    height: 200px;
+}
+
+#titleResposta{
+    text-align: center;
+}
+
+#areaCodigoInput{
+    display: flex;
+    justify-content: center;
+    gap: 450px;
+}
+
+#areaEscreverCodigoInput{
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+#botaoEnviar{
+    display: block;
+    margin: 20px auto;
+    height: 50px;
+    
+}
