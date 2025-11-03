@@ -1,41 +1,20 @@
-#title{
+#title, #titleResposta {
     text-align: center;
 }
 
-#areaCodigo{
-    width: 500px; 
-    height: 200px;
+#areaCodigo {
+    height: 450px; 
+    font-family: monospace;
 }
 
-#areaInput{
-    width: 500px; 
-    height: 200px;
+.test-case-area {
+    height: 120px;
+    font-family: monospace;
 }
 
-#areaResposta{
-    width: 100%; 
-    height: 200px;
-}
-
-#titleResposta{
-    text-align: center;
-}
-
-#areaCodigoInput{
-    display: flex;
-    justify-content: center;
-    gap: 450px;
-}
-
-#areaEscreverCodigoInput{
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-}
-
-#botaoEnviar{
-    display: block;
-    margin: 20px auto;
-    height: 50px;
-    width: 56%;
+#areaResposta {
+    height: 250px; 
+    font-family: monospace;
+    background-color: #f0f0f0;
+    margin-block-end: 30px;
 }

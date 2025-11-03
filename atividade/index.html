@@ -1,33 +1,90 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Compilador de Código</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="">
 </head>
 
-<body>
-    <h1 id="title">Compilador de Códigos - IFPR</h1>
+<body class="bg-light">
 
-    <div>
-        <div id="areaCodigoInput">
-            <h2 id="titleCodigo">Código</h2>
-            <h2>Input</h2>
+    <div class="container mt-4">
+        <h1 id="title">Compilador de Códigos</h1>
+
+        <div class="row mt-4">
+            
+            <div class="col-md-6">
+                <label for="areaCodigo" class="form-label">
+                    <h2 id="titleCodigo">Código (Python)</h2>
+                </label>
+                <textarea id="areaCodigo" class="form-control" placeholder="escreva seu código aqui..."></textarea>
+            </div>
+            
+            
+            <div class="col-md-6">
+                <h2>Casos de Teste</h2>
+
+                
+                <div class="row mb-2">
+                    <div class="col-6">
+                        <label for="input1" class="form-label">Entrada 1</label>
+                        <textarea id="input1" class="form-control test-case-area"></textarea>
+                    </div>
+                    <div class="col-6">
+                        <label for="output1" class="form-label">Saída Esperada 1</label>
+                        <textarea id="output1" class="form-control test-case-area"></textarea>
+                    </div>
+                </div>
+
+                
+                <div class="row mb-2">
+                    <div class="col-6">
+                        <label for="input2" class="form-label">Entrada 2</label>
+                        <textarea id="input2" class="form-control test-case-area"></textarea>
+                    </div>
+                    <div class="col-6">
+                        <label for="output2" class="form-label">Saída Esperada 2</label>
+                        <textarea id="output2" class="form-control test-case-area"></textarea>
+                    </div>
+                </div>
+
+                
+                <div class="row">
+                    <div class="col-6">
+                        <label for="input3" class="form-label">Entrada 3</label>
+                        <textarea id="input3" class="form-control test-case-area"></textarea>
+                    </div>
+                    <div class="col-6">
+                        <label for="output3" class="form-label">Saída Esperada 3</label>
+                        <textarea id="output3" class="form-control test-case-area"></textarea>
+                    </div>
+                </div>
+
+            </div>
         </div>
-        <div id="areaEscreverCodigoInput">
-            <textarea id="areaCodigo" rows="1000">escreva seus códigos aqui...</textarea>
-            <textarea id="areaInput" rows="1000">escreva seus inputs aqui...</textarea>
+        
+
+        <div class="row mt-3">
+            <div class="col-12">
+                <button id="botaoEnviar" class="btn btn-primary w-100 p-3">Enviar</button>
+            </div>
+        </div>
+
+        
+        <div class="row mt-4">
+            <div class="col-12">
+                <h2 id="titleResposta">Resposta</h2>
+                <textarea id="areaResposta" class="form-control" readonly></textarea>
+            </div>
         </div>
     </div>
 
-    <Button id="botaoEnviar">Send</Button>
-    <h2 id="titleResposta">Resposta</h2>
-    <textarea id="areaResposta" rows="1000"></textarea>
-
-
+    
     <script src="script.js"></script>
 </body>
 
