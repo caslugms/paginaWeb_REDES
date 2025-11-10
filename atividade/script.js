@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const botaoDeEnviar = document.getElementById("botaoEnviar");
     const caixaDeCodigo = document.getElementById("areaCodigo");
     const caixaDeResposta = document.getElementById("areaResposta");
+    const seletorLinguagem = document.getElementById("linguagem");
 
     const entrada1 = document.getElementById("input1");
     const esperado1 = document.getElementById("output1");
@@ -15,13 +16,13 @@ document.addEventListener("DOMContentLoaded", function() {
 
     const URL_DO_PROFESSOR = "https://judge.darlon.com.br/submissions?base64_encoded=true&wait=true";
 
-    function rodaUmTeste(codigoFonte, entrada) {
+    function rodaUmTeste(codigoFonte, entrada, linguagemId) {
         const codigoBase64 = btoa(codigoFonte);
         const entradaBase64 = btoa(entrada);
 
         const pacoteDeDados = {
             source_code: codigoBase64,
-            language_id: 71,
+            language_id: linguagemId,
             stdin: entradaBase64,
             base64_encoded: true,
             wait: true
@@ -29,17 +30,15 @@ document.addEventListener("DOMContentLoaded", function() {
 
         return fetch(URL_DO_PROFESSOR, {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify(pacoteDeDados)
         }).then(response => response.json());
     }
 
     botaoDeEnviar.addEventListener("click", function() {
-        
         const codigoFonte = caixaDeCodigo.value;
-        
+        const linguagemId = seletorLinguagem.value;
+
         const valorEntrada1 = entrada1.value;
         const valorEntrada2 = entrada2.value;
         const valorEntrada3 = entrada3.value;
@@ -48,90 +47,44 @@ document.addEventListener("DOMContentLoaded", function() {
         const valorEsperado2 = esperado2.value;
         const valorEsperado3 = esperado3.value;
 
-
         const listaDeTestes = [
-            rodaUmTeste(codigoFonte, valorEntrada1),
-            rodaUmTeste(codigoFonte, valorEntrada2),
-            rodaUmTeste(codigoFonte, valorEntrada3)
+            rodaUmTeste(codigoFonte, valorEntrada1, linguagemId),
+            rodaUmTeste(codigoFonte, valorEntrada2, linguagemId),
+            rodaUmTeste(codigoFonte, valorEntrada3, linguagemId)
         ];
 
         Promise.all(listaDeTestes)
             .then(respostas => {
-                
                 let contadorDeAcertos = 0;
                 let relatorioFinal = "";
 
-
-                let saida1 = "";
-                if (respostas[0].stdout) {
-                    saida1 = atob(respostas[0].stdout);
+                function verificarTeste(num, resposta, esperado) {
+                    let saida = "";
+                    if (resposta.stdout) saida = atob(resposta.stdout);
+                    const taCerto = saida.trim() === esperado.trim();
+                    if (taCerto) contadorDeAcertos++;
+                    relatorioFinal += `Teste ${num}: ${taCerto ? "Correto" : "Incorreto"}\n`;
+                    if (!taCerto) {
+                        relatorioFinal += `  Esperado: '${esperado}'\n`;
+                        relatorioFinal += `  Recebido: '${saida}'\n`;
+                    }
                 }
 
-                const taCerto1 = saida1.trim() === valorEsperado1.trim();
-                if (taCerto1) contadorDeAcertos++;
-                
-                if (taCerto1) {
-                    relatorioFinal += "Teste 1: Correto\n";
-                } else {
-                    relatorioFinal += "Teste 1: Incorreto\n";
-                }
-                
-                if (!taCerto1) {
-                    relatorioFinal += "  Esperado: '" + valorEsperado1 + "'\n";
-                    relatorioFinal += "  Recebido: '" + saida1 + "'\n";
-                }
-                
-                let saida2 = "";
-                if (respostas[1].stdout) {
-                    saida2 = atob(respostas[1].stdout);
-                }
-
-                const taCerto2 = saida2.trim() === valorEsperado2.trim();
-                if (taCerto2) contadorDeAcertos++;
-
-                if (taCerto2) {
-                    relatorioFinal += "Teste 2: Correto\n";
-                } else {
-                    relatorioFinal += "Teste 2: Incorreto\n";
-                }
-
-                if (!taCerto2) {
-                    relatorioFinal += "  Esperado: '" + valorEsperado2 + "'\n";
-                    relatorioFinal += "  Recebido: '" + saida2 + "'\n";
-                }
-
-                let saida3 = "";
-                if (respostas[2].stdout) {
-                    saida3 = atob(respostas[2].stdout);
-                }
-
-                const taCerto3 = saida3.trim() === valorEsperado3.trim();
-                if (taCerto3) contadorDeAcertos++;
-
-                if (taCerto3) {
-                    relatorioFinal += "Teste 3: Correto\n";
-                } else {
-                    relatorioFinal += "Teste 3: Incorreto\n";
-                }
-
-                if (!taCerto3) {
-                    relatorioFinal += "  Esperado: '" + valorEsperado3 + "'\n";
-                    relatorioFinal += "  Recebido: '" + saida3 + "'\n";
-                }
-
+                verificarTeste(1, respostas[0], valorEsperado1);
+                verificarTeste(2, respostas[1], valorEsperado2);
+                verificarTeste(3, respostas[2], valorEsperado3);
 
                 const porcentagem = (contadorDeAcertos / 3) * 100;
                 relatorioFinal += "\n-----------------\n";
                 relatorioFinal += "Resultado Final:\n";
-                relatorioFinal += contadorDeAcertos + " de 3 testes corretos.\n";
-                relatorioFinal += "Porcentagem: " + porcentagem.toFixed(2) + "%"; 
+                relatorioFinal += `${contadorDeAcertos} de 3 testes corretos.\n`;
+                relatorioFinal += `Porcentagem: ${porcentagem.toFixed(2)}%`;
 
                 caixaDeResposta.value = relatorioFinal;
-
             })
             .catch(error => {
                 console.error("Deu erro:", error);
-                caixaDeResposta.value = "Erro ao ligar no servidor.";
+                caixaDeResposta.value = "Erro ao conectar ao servidor.";
             });
     });
 });
